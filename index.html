@@ -7,7 +7,7 @@
     
     <!-- Manifest para PWA (App móvil) -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0a0a0a">
+    <meta name="theme-color" content="#000000">
     <link rel="apple-touch-icon" href="copa.png">
     <link rel="icon" href="copa.png">
 
@@ -21,7 +21,7 @@
 
     <style>
         :root {
-            --bg-color: #050505;
+            --bg-color: #000000;
             --text-color: #e0e0e0;
             --gold: #d4af37;
             --gold-light: #f3e5ab;
@@ -43,32 +43,33 @@
         body {
             font-family: 'Playfair Display', serif;
             background-color: var(--bg-color);
-            background-image: 
-                radial-gradient(circle at 50% 0%, #1a1410 0%, var(--bg-color) 60%),
-                linear-gradient(to bottom, var(--bg-color), #080606);
             color: var(--text-color);
             line-height: 1.6;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        body::before {
-            content: '';
+        /* Lienzo para las ascuas de fuego */
+        #fire-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 60%);
-            z-index: -1;
+            z-index: 0;
             pointer-events: none;
+        }
+
+        /* Asegurar que el contenido esté sobre el lienzo */
+        header, section, footer, .interactive-container {
+            position: relative;
+            z-index: 2;
         }
 
         header {
             text-align: center;
             padding: 100px 20px 60px;
             border-bottom: 1px solid var(--border-gold);
-            position: relative;
             animation: fadeInUp 1.2s ease-out;
         }
 
@@ -141,7 +142,6 @@
             box-shadow: 
                 0 10px 30px rgba(0, 0, 0, 0.8),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            position: relative;
             transition: transform 0.3s ease;
         }
 
@@ -178,20 +178,28 @@
             text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
         }
 
-        section {
+        /* Contenedor Flexbox para PC (Chatbot y Mapa lado a lado) */
+        .interactive-container {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
             padding: 60px 20px;
-            max-width: 1000px;
+            max-width: 1400px;
             margin: 0 auto;
+        }
+
+        .interactive-section {
+            flex: 1;
             text-align: center;
             animation: fadeInUp 1.6s ease-out;
         }
 
-        section h2 {
+        .interactive-section h2 {
             font-family: 'Cinzel', serif;
             color: var(--gold);
             margin-bottom: 30px;
             letter-spacing: 3px;
-            font-size: 2rem;
+            font-size: 1.8rem;
             text-transform: uppercase;
         }
 
@@ -201,8 +209,7 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 15px 50px rgba(0,0,0,0.7);
-            max-width: 800px;
-            margin: 0 auto;
+            height: 600px;
         }
 
         .map-instruction {
@@ -221,7 +228,7 @@
         }
 
         .map-controls button {
-            background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+            background: linear-gradient(145deg, #1a1a1a, #000000);
             color: var(--gold);
             border: 1px solid var(--border-gold);
             padding: 12px 35px;
@@ -244,7 +251,7 @@
 
         #sheet-wrapper {
             width: 100%;
-            height: 600px;
+            height: 500px;
             overflow: auto;
             border: 1px solid var(--border-gold);
             background: #fff;
@@ -279,6 +286,19 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* RESPONSIVIDAD: PC Y TABLET GRANDE */
+        @media (min-width: 992px) {
+            .interactive-container {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+            /* En PC, el mapa es un poco más ancho */
+            .map-section {
+                flex: 1.4;
+            }
+        }
+
+        /* RESPONSIVIDAD: CELULARES */
         @media (max-width: 768px) {
             .time-box {
                 min-width: 70px;
@@ -294,10 +314,16 @@
             h1 {
                 letter-spacing: 3px;
             }
+            .chat-container {
+                height: 500px;
+            }
         }
     </style>
 </head>
 <body>
+
+    <!-- Lienzo de Ascuas de Fuego -->
+    <canvas id="fire-canvas"></canvas>
 
     <header>
         <h1>Cata de Vino Masónico</h1>
@@ -328,44 +354,111 @@
         <p class="event-date">21 de Noviembre de 2026 a las 18:00 hrs</p>
     </section>
 
-    <!-- Sección del Chatbot -->
-    <section id="chat-section">
-        <h2>Adquisición de Boletos</h2>
-        <div class="chat-container">
-            <iframe src="https://links.collect.chat/6a4f40a2b9dd7aeb4218b40a" width="100%" height="600" frameBorder="0"></iframe>
-        </div>
-    </section>
-
-    <!-- Sección del Mapa de Asientos -->
-    <section id="map-section">
-        <h2>Mapa de Asientos</h2>
-        <p class="map-instruction">Use los controles para acercarse y explorar la disponibilidad</p>
+    <!-- Contenedor de Chatbot y Mapa (2 columnas en PC) -->
+    <div class="interactive-container">
         
-        <div class="map-controls">
-            <button id="zoomIn">+ Acercar</button>
-            <button id="zoomOut">- Alejar</button>
-        </div>
+        <!-- Columna 1: Chatbot -->
+        <section class="interactive-section chat-section">
+            <h2>Adquisición de Boletos</h2>
+            <div class="chat-container">
+                <iframe src="https://links.collect.chat/6a4f40a2b9dd7aeb4218b40a" width="100%" height="100%" frameBorder="0"></iframe>
+            </div>
+        </section>
 
-        <div id="sheet-wrapper">
-            <iframe id="sheetFrame" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRa33lBX0VDixplZDoNP82DW4rsE20koJdU0e1thUEm6k6e-rBRB9BY5VZPqw2KF9NBgzBq4W-LTvKG/pubhtml?widget=true&headers=false&gid=0"></iframe>
-        </div>
-    </section>
+        <!-- Columna 2: Mapa de Asientos -->
+        <section class="interactive-section map-section">
+            <h2>Mapa de Asientos</h2>
+            <p class="map-instruction">Use los controles para acercarse y explorar la disponibilidad</p>
+            
+            <div class="map-controls">
+                <button id="zoomIn">+ Acercar</button>
+                <button id="zoomOut">- Alejar</button>
+            </div>
+
+            <div id="sheet-wrapper">
+                <iframe id="sheetFrame" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRa33lBX0VDixplZDoNP82DW4rsE20koJdU0e1thUEm6k6e-rBRB9BY5VZPqw2KF9NBgzBq4W-LTvKG/pubhtml?widget=true&headers=false&gid=0"></iframe>
+            </div>
+        </section>
+
+    </div>
 
     <footer>
         <p>&copy; Camelot 32</p>
     </footer>
 
     <script>
+        // === EFECTO DE ASCUAS DE FUEGO CAYENDO ===
+        const canvas = document.getElementById('fire-canvas');
+        const ctx = canvas.getContext('2d');
+        let embers = [];
+
+        function setCanvasSize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', setCanvasSize);
+        setCanvasSize();
+
+        class Ember {
+            constructor() {
+                this.reset(true);
+            }
+            reset(initial = false) {
+                this.x = Math.random() * canvas.width;
+                this.y = initial ? Math.random() * canvas.height : -10;
+                this.size = Math.random() * 2.5 + 0.5;
+                this.speedY = Math.random() * 1.2 + 0.3;
+                this.speedX = Math.random() * 0.6 - 0.3;
+                this.opacity = Math.random() * 0.6 + 0.2;
+                // Colores: Naranja oscuro a Dorado
+                this.color = Math.random() > 0.5 ? '255, 140, 0' : '255, 215, 0'; 
+            }
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                if (this.y > canvas.height + 10) {
+                    this.reset(false);
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = `rgba(${this.color}, 0.8)`;
+                ctx.fill();
+            }
+        }
+
+        function initEmbers() {
+            embers = [];
+            const count = Math.floor(window.innerWidth / 20); // Densidad
+            for (let i = 0; i < count; i++) {
+                embers.push(new Ember());
+            }
+        }
+
+        function animateEmbers() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            embers.forEach(ember => {
+                ember.update();
+                ember.draw();
+            });
+            requestAnimationFrame(animateEmbers);
+        }
+
+        initEmbers();
+        animateEmbers();
+        window.addEventListener('resize', initEmbers);
+
+
         // === CUENTA REGRESIVA ===
-        // Fecha del evento: 21 de Noviembre de 2026 a las 18:00 hrs
-        // (El mes en JS va de 0 a 11, por lo que 10 = Noviembre)
-        const eventDate = new Date(2026, 10, 21, 18, 0, 0).getTime();
+        const eventDate = new Date('2026-11-21T18:00:00').getTime();
 
         function updateCountdown() {
             const now = new Date().getTime();
             const distance = eventDate - now;
 
-            // Math.max(0, ...) asegura que si la fecha pasa, se quede en 00 y no tire error o números negativos
             const days = Math.max(0, Math.floor(distance / (1000 * 60 * 60 * 24)));
             const hours = Math.max(0, Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
             const minutes = Math.max(0, Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
@@ -377,12 +470,11 @@
             document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
         }
 
-        // Ejecutar inmediatamente y luego cada segundo
         updateCountdown();
         setInterval(updateCountdown, 1000);
 
         // === CONTROL DE ZOOM PARA EL MAPA DE ASIENTOS ===
-        let zoomLevel = 0.5; // Empieza al 50%
+        let zoomLevel = 0.5; 
         const iframe = document.getElementById('sheetFrame');
 
         function applyZoom() {
@@ -407,7 +499,7 @@
 
         applyZoom();
 
-        // === REGISTRO DE PWA (APLICACIÓN MÓVIL) ===
+        // === REGISTRO DE PWA ===
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('service-worker.js')
