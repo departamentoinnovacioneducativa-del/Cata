@@ -52,7 +52,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Efecto de luz dorada sutil en el fondo */
         body::before {
             content: '';
             position: fixed;
@@ -65,7 +64,6 @@
             pointer-events: none;
         }
 
-        /* Encabezado */
         header {
             text-align: center;
             padding: 100px 20px 60px;
@@ -108,7 +106,6 @@
             font-weight: 300;
         }
 
-        /* Cuenta Regresiva */
         #countdown-section {
             text-align: center;
             padding: 80px 20px;
@@ -181,7 +178,6 @@
             text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
         }
 
-        /* Secciones Generales */
         section {
             padding: 60px 20px;
             max-width: 1000px;
@@ -199,7 +195,6 @@
             text-transform: uppercase;
         }
 
-        /* Chatbot */
         .chat-container {
             background: var(--glass-bg);
             border: 1px solid var(--border-gold);
@@ -210,7 +205,6 @@
             margin: 0 auto;
         }
 
-        /* Mapa */
         .map-instruction {
             margin-bottom: 25px;
             color: #888;
@@ -248,7 +242,6 @@
             transform: translateY(-2px);
         }
 
-        /* Wrapper del IFrame */
         #sheet-wrapper {
             width: 100%;
             height: 600px;
@@ -281,13 +274,11 @@
             margin-top: 40px;
         }
 
-        /* Animaciones */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .time-box {
                 min-width: 70px;
@@ -315,7 +306,7 @@
 
     <!-- Sección de Cuenta Regresiva -->
     <section id="countdown-section">
-        <h2>El evento comienza en</h2>
+        <h2>Faltan</h2>
         <div id="countdown">
             <div class="time-box">
                 <span id="days">00</span>
@@ -334,7 +325,7 @@
                 <div class="label">Segundos</div>
             </div>
         </div>
-        <p class="event-date">21 de Noviembre a las 18:00 hrs</p>
+        <p class="event-date">21 de Noviembre de 2026 a las 18:00 hrs</p>
     </section>
 
     <!-- Sección del Chatbot -->
@@ -356,7 +347,6 @@
         </div>
 
         <div id="sheet-wrapper">
-            <!-- URL con widget=true para evitar el Error 400 de Google -->
             <iframe id="sheetFrame" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRa33lBX0VDixplZDoNP82DW4rsE20koJdU0e1thUEm6k6e-rBRB9BY5VZPqw2KF9NBgzBq4W-LTvKG/pubhtml?widget=true&headers=false&gid=0"></iframe>
         </div>
     </section>
@@ -366,54 +356,39 @@
     </footer>
 
     <script>
-        // === CUENTA REGRESIVA CORREGIDA Y A PRUEBA DE FALLOS ===
-        // Formato: new Date(año, mes, día, hora, minuto, segundo)
-        // Nota: En JavaScript, los meses van de 0 a 11 (10 = Noviembre)
-        const eventDate = new Date(2024, 10, 21, 18, 0, 0).getTime();
+        // === CUENTA REGRESIVA ===
+        // Fecha del evento: 21 de Noviembre de 2026 a las 18:00 hrs
+        // (El mes en JS va de 0 a 11, por lo que 10 = Noviembre)
+        const eventDate = new Date(2026, 10, 21, 18, 0, 0).getTime();
 
         function updateCountdown() {
             const now = new Date().getTime();
             const distance = eventDate - now;
 
-            // Cálculos de tiempo
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            // Math.max(0, ...) asegura que si la fecha pasa, se quede en 00 y no tire error o números negativos
+            const days = Math.max(0, Math.floor(distance / (1000 * 60 * 60 * 24)));
+            const hours = Math.max(0, Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+            const minutes = Math.max(0, Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
+            const seconds = Math.max(0, Math.floor((distance % (1000 * 60)) / 1000));
 
-            // Actualizar DOM con seguridad (comprobando si existen)
-            const dEl = document.getElementById("days");
-            const hEl = document.getElementById("hours");
-            const mEl = document.getElementById("minutes");
-            const sEl = document.getElementById("seconds");
-
-            if (dEl) dEl.innerText = days < 10 ? "0" + days : days;
-            if (hEl) hEl.innerText = hours < 10 ? "0" + hours : hours;
-            if (mEl) mEl.innerText = minutes < 10 ? "0" + minutes : minutes;
-            if (sEl) sEl.innerText = seconds < 10 ? "0" + seconds : seconds;
-
-            // Si el evento ya pasó
-            if (distance < 0) {
-                clearInterval(countdownInterval);
-                const cd = document.getElementById("countdown");
-                if (cd) cd.innerHTML = "<h2 style='color: var(--gold); font-size: 2rem;'>El evento ha comenzado</h2>";
-            }
+            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
         }
 
-        // Iniciar cuenta regresiva
-        const countdownInterval = setInterval(updateCountdown, 1000);
-        updateCountdown(); // Ejecutar inmediatamente
+        // Ejecutar inmediatamente y luego cada segundo
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
 
         // === CONTROL DE ZOOM PARA EL MAPA DE ASIENTOS ===
         let zoomLevel = 0.5; // Empieza al 50%
         const iframe = document.getElementById('sheetFrame');
 
         function applyZoom() {
-            if (iframe) {
-                iframe.style.width = (100 / zoomLevel) + "%";
-                iframe.style.height = (100 / zoomLevel) + "%";
-                iframe.style.transform = `scale(${zoomLevel})`;
-            }
+            iframe.style.width = (100 / zoomLevel) + "%";
+            iframe.style.height = (100 / zoomLevel) + "%";
+            iframe.style.transform = `scale(${zoomLevel})`;
         }
 
         document.getElementById('zoomIn').addEventListener('click', () => {
