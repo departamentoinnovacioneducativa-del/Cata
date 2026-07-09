@@ -42,6 +42,7 @@
             color: var(--text-color);
             line-height: 1.6;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased; /* Mejora visual en iOS */
         }
 
         /* Encabezado */
@@ -94,6 +95,7 @@
             border-radius: 4px;
             min-width: 100px;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); /* Soporte para Safari/iOS */
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
 
@@ -160,6 +162,7 @@
             display: flex;
             justify-content: center;
             gap: 15px;
+            flex-wrap: wrap; /* Para que se acomode bien en pantallas pequeñas */
         }
 
         .map-controls button {
@@ -189,6 +192,7 @@
             border-radius: 8px;
             position: relative;
             box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
         }
 
         #sheetFrame {
@@ -215,6 +219,10 @@
             }
             .time-box span {
                 font-size: 2rem;
+            }
+            /* Ajuste de altura del mapa en celulares para que no sea tan alto */
+            #sheet-wrapper {
+                height: 450px;
             }
         }
     </style>
@@ -269,7 +277,8 @@
         </div>
 
         <div id="sheet-wrapper">
-            <iframe id="sheetFrame" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRa33lBX0VDixplZDoNP82DW4rsE20koJdU0e1thUEm6k6e-rBRB9BY5VZPqw2KF9NBgzBq4W-LTvKG/pubhtml?gid=0&single=true"></iframe>
+            <!-- URL CORREGIDA para evitar el Error 400 de Google -->
+            <iframe id="sheetFrame" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRa33lBX0VDixplZDoNP82DW4rsE20koJdU0e1thUEm6k6e-rBRB9BY5VZPqw2KF9NBgzBq4W-LTvKG/pubhtml?widget=true&headers=false&gid=0"></iframe>
         </div>
     </section>
 
