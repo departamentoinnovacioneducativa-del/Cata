@@ -1,10 +1,11 @@
 {
-  "name": "Copa de Vino Masónico - Teatro",
-  "short_name": "Teatro Lux",
-  "description": "Venta de boletos para la obra Copa de Vino Masónico",
-  "start_url": "/",
+  "name": "Cata de Vino Masónico",
+  "short_name": "Cata Vino",
+  "description": "Venta de boletos para la obra Cata de Vino Masónico",
+  "start_url": "https://departamentoinnovacioneducativa-del.github.io/Cata/",
+  "scope": "https://departamentoinnovacioneducativa-del.github.io/Cata/",
   "display": "standalone",
-  "background_color": "#0a0a0a",
+  "background_color": "#000000",
   "theme_color": "#d4af37",
   "orientation": "portrait-primary",
   "icons": [
