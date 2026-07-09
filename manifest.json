@@ -1,0 +1,24 @@
+{
+  "name": "Copa de Vino Masónico - Teatro",
+  "short_name": "Teatro Lux",
+  "description": "Venta de boletos para la obra Copa de Vino Masónico",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#d4af37",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "copa.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "copa.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
