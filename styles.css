@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copa de Vino Masónico - Teatro Gran Lux</title>
+    
+    <!-- Tipografía Elegante -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Manifest para PWA (App móvil) -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0a0a">
+    <link rel="apple-touch-icon" href="copa.png">
+    <link rel="icon" href="copa.png">
+
+    <!-- Script del Chatbot -->
+    <script async type="text/javascript" src="https://collectcdn.com/embed.js"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <h1>Copa de Vino Masónico</h1>
+        <p class="subtitle">Una velada de misterio, elegancia y dramatismo</p>
+    </header>
+
+    <!-- Sección de Cuenta Regresiva -->
+    <section id="countdown-section">
+        <h2>El evento comienza en</h2>
+        <div id="countdown">
+            <div class="time-box">
+                <span id="days">00</span>
+                <div class="label">Días</div>
+            </div>
+            <div class="time-box">
+                <span id="hours">00</span>
+                <div class="label">Horas</div>
+            </div>
+            <div class="time-box">
+                <span id="minutes">00</span>
+                <div class="label">Minutos</div>
+            </div>
+            <div class="time-box">
+                <span id="seconds">00</span>
+                <div class="label">Segundos</div>
+            </div>
+        </div>
+        <p class="event-date">21 de Noviembre a las 18:00 hrs</p>
+    </section>
+
+    <!-- Sección del Chatbot -->
+    <section id="chat-section">
+        <h2>Adquisición de Boletos</h2>
+        <div class="chat-container">
+            <iframe src="https://links.collect.chat/6a4f40a2b9dd7aeb4218b40a" width="100%" height="600" frameBorder="0"></iframe>
+        </div>
+    </section>
+
+    <!-- Sección del Mapa de Asientos (Google Sheets) -->
+    <section id="map-section">
+        <h2>Mapa de Asientos del Teatro</h2>
+        <p class="map-instruction">Use los controles para acercarse y explorar la disponibilidad</p>
+        
+        <div class="map-controls">
+            <button id="zoomIn">+ Acercar</button>
+            <button id="zoomOut">- Alejar</button>
+        </div>
+
+        <div id="sheet-wrapper">
+            <iframe id="sheetFrame" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRa33lBX0VDixplZDoNP82DW4rsE20koJdU0e1thUEm6k6e-rBRB9BY5VZPqw2KF9NBgzBq4W-LTvKG/pubhtml?gid=0&single=true"></iframe>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 Teatro Gran Lux. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
