@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cata de vino masonico</title>
+    <title>Cata de Vino Masónico</title>
     
     <!-- Manifest para PWA (App móvil) -->
     <link rel="manifest" href="manifest.json">
@@ -17,16 +17,17 @@
     <!-- Tipografía Elegante -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
-    <!-- CSS INCORPORADO -->
     <style>
         :root {
-            --bg-color: #0a0a0a;
+            --bg-color: #050505;
             --text-color: #e0e0e0;
             --gold: #d4af37;
+            --gold-light: #f3e5ab;
             --wine: #722f37;
-            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --border-gold: rgba(212, 175, 55, 0.4);
         }
 
         * {
@@ -35,164 +36,229 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Playfair Display', serif;
             background-color: var(--bg-color);
-            background-image: radial-gradient(circle at 50% 0%, #1a1a1a 0%, var(--bg-color) 70%);
+            background-image: 
+                radial-gradient(circle at 50% 0%, #1a1410 0%, var(--bg-color) 60%),
+                linear-gradient(to bottom, var(--bg-color), #080606);
             color: var(--text-color);
             line-height: 1.6;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased; /* Mejora visual en iOS */
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Efecto de luz dorada sutil en el fondo */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 60%);
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* Encabezado */
         header {
             text-align: center;
-            padding: 80px 20px 40px;
-            border-bottom: 1px solid var(--glass-bg);
+            padding: 100px 20px 60px;
+            border-bottom: 1px solid var(--border-gold);
+            position: relative;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        header::after {
+            content: '✦';
+            color: var(--gold);
+            font-size: 1.5rem;
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-color);
+            padding: 0 15px;
         }
 
         h1 {
             font-family: 'Cinzel', serif;
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            color: var(--gold);
-            letter-spacing: 4px;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
-            margin-bottom: 10px;
+            font-weight: 900;
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            background: linear-gradient(to right, var(--gold), var(--gold-light), var(--gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 2px 10px rgba(0,0,0,0.8));
         }
 
         .subtitle {
             font-style: italic;
-            font-size: 1.2rem;
-            color: #a0a0a0;
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            color: #b0b0b0;
+            letter-spacing: 2px;
+            font-weight: 300;
         }
 
         /* Cuenta Regresiva */
         #countdown-section {
             text-align: center;
-            padding: 60px 20px;
+            padding: 80px 20px;
+            animation: fadeInUp 1.4s ease-out;
         }
 
         #countdown-section h2 {
             font-family: 'Cinzel', serif;
             color: var(--text-color);
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             font-weight: 400;
-            letter-spacing: 2px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+            opacity: 0.8;
         }
 
         #countdown {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .time-box {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2));
+            border: 1px solid var(--border-gold);
+            padding: 30px 20px;
+            border-radius: 8px;
+            min-width: 130px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .time-box:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+        }
+
+        .time-box span {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(3rem, 6vw, 4.5rem);
+            font-weight: 700;
+            color: var(--gold-light);
+            display: block;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .time-box .label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #888;
+            font-family: 'Cinzel', serif;
+        }
+
+        .event-date {
+            margin-top: 40px;
+            font-size: 1.4rem;
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Secciones Generales */
+        section {
+            padding: 60px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+            animation: fadeInUp 1.6s ease-out;
+        }
+
+        section h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            margin-bottom: 30px;
+            letter-spacing: 3px;
+            font-size: 2rem;
+            text-transform: uppercase;
+        }
+
+        /* Chatbot */
+        .chat-container {
+            background: var(--glass-bg);
+            border: 1px solid var(--border-gold);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.7);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Mapa */
+        .map-instruction {
+            margin-bottom: 25px;
+            color: #888;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+
+        .map-controls {
+            margin-bottom: 25px;
             display: flex;
             justify-content: center;
             gap: 20px;
             flex-wrap: wrap;
         }
 
-        .time-box {
-            background: var(--glass-bg);
-            border: 1px solid var(--gold);
-            padding: 20px;
-            border-radius: 4px;
-            min-width: 100px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px); /* Soporte para Safari/iOS */
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .time-box span {
-            font-family: 'Cinzel', serif;
-            font-size: 3rem;
-            color: var(--gold);
-            display: block;
-        }
-
-        .time-box .label {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #888;
-        }
-
-        .event-date {
-            margin-top: 30px;
-            font-size: 1.2rem;
-            color: var(--wine);
-            font-weight: bold;
-        }
-
-        /* Sección Chatbot */
-        #chat-section {
-            padding: 60px 20px;
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        #chat-section h2, #map-section h2 {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            margin-bottom: 20px;
-            letter-spacing: 2px;
-        }
-
-        .chat-container {
-            background: var(--glass-bg);
-            border: 1px solid var(--gold);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-        }
-
-        /* Sección Google Sheets */
-        #map-section {
-            padding: 60px 20px 100px;
-            max-width: 1000px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .map-instruction {
-            margin-bottom: 20px;
-            color: #888;
-            font-style: italic;
-        }
-
-        .map-controls {
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap; /* Para que se acomode bien en pantallas pequeñas */
-        }
-
         .map-controls button {
-            background: transparent;
+            background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
             color: var(--gold);
-            border: 1px solid var(--gold);
-            padding: 10px 20px;
+            border: 1px solid var(--border-gold);
+            padding: 12px 35px;
             cursor: pointer;
             font-family: 'Cinzel', serif;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
             transition: all 0.3s ease;
             border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
         .map-controls button:hover {
-            background: var(--gold);
-            color: var(--bg-color);
+            background: linear-gradient(145deg, var(--gold), #b8902b);
+            color: #000;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            transform: translateY(-2px);
         }
 
-        /* Wrapper que contiene el IFrame escalado */
+        /* Wrapper del IFrame */
         #sheet-wrapper {
             width: 100%;
             height: 600px;
             overflow: auto;
-            border: 1px solid var(--glass-bg);
+            border: 1px solid var(--border-gold);
             background: #fff;
-            border-radius: 8px;
+            border-radius: 12px;
             position: relative;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+            box-shadow: 0 15px 50px rgba(0,0,0,0.7);
+            -webkit-overflow-scrolling: touch;
         }
 
         #sheetFrame {
@@ -201,28 +267,41 @@
             border: none;
             transform-origin: top left;
             transform: scale(0.5);
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         footer {
             text-align: center;
-            padding: 30px;
-            border-top: 1px solid var(--glass-bg);
+            padding: 50px 20px;
+            border-top: 1px solid var(--border-gold);
             color: #666;
             font-size: 0.9rem;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 2px;
+            margin-top: 40px;
         }
 
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             .time-box {
                 min-width: 70px;
-                padding: 15px;
+                padding: 20px 10px;
             }
-            .time-box span {
-                font-size: 2rem;
+            .time-box .label {
+                font-size: 0.7rem;
+                letter-spacing: 1px;
             }
-            /* Ajuste de altura del mapa en celulares para que no sea tan alto */
             #sheet-wrapper {
                 height: 450px;
+            }
+            h1 {
+                letter-spacing: 3px;
             }
         }
     </style>
@@ -230,7 +309,7 @@
 <body>
 
     <header>
-        <h1>Copa de Vino Masónico</h1>
+        <h1>Cata de Vino Masónico</h1>
         <p class="subtitle">Te invitamos a compartir este momento con nosotros</p>
     </header>
 
@@ -266,9 +345,9 @@
         </div>
     </section>
 
-    <!-- Sección del Mapa de Asientos (Google Sheets) -->
+    <!-- Sección del Mapa de Asientos -->
     <section id="map-section">
-        <h2>Mapa de Asientos del Teatro</h2>
+        <h2>Mapa de Asientos</h2>
         <p class="map-instruction">Use los controles para acercarse y explorar la disponibilidad</p>
         
         <div class="map-controls">
@@ -277,51 +356,64 @@
         </div>
 
         <div id="sheet-wrapper">
-            <!-- URL CORREGIDA para evitar el Error 400 de Google -->
+            <!-- URL con widget=true para evitar el Error 400 de Google -->
             <iframe id="sheetFrame" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRa33lBX0VDixplZDoNP82DW4rsE20koJdU0e1thUEm6k6e-rBRB9BY5VZPqw2KF9NBgzBq4W-LTvKG/pubhtml?widget=true&headers=false&gid=0"></iframe>
         </div>
     </section>
 
     <footer>
-        <p>&copy; Camelot 32.</p>
+        <p>&copy; Camelot 32</p>
     </footer>
 
-    <!-- JS INCORPORADO -->
     <script>
-        // === CUENTA REGRESIVA ===
-        const eventDate = new Date("Nov 21, 2024 18:00:00").getTime();
+        // === CUENTA REGRESIVA CORREGIDA Y A PRUEBA DE FALLOS ===
+        // Formato: new Date(año, mes, día, hora, minuto, segundo)
+        // Nota: En JavaScript, los meses van de 0 a 11 (10 = Noviembre)
+        const eventDate = new Date(2024, 10, 21, 18, 0, 0).getTime();
 
         function updateCountdown() {
             const now = new Date().getTime();
             const distance = eventDate - now;
 
+            // Cálculos de tiempo
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
-            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
-            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
-            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+            // Actualizar DOM con seguridad (comprobando si existen)
+            const dEl = document.getElementById("days");
+            const hEl = document.getElementById("hours");
+            const mEl = document.getElementById("minutes");
+            const sEl = document.getElementById("seconds");
 
+            if (dEl) dEl.innerText = days < 10 ? "0" + days : days;
+            if (hEl) hEl.innerText = hours < 10 ? "0" + hours : hours;
+            if (mEl) mEl.innerText = minutes < 10 ? "0" + minutes : minutes;
+            if (sEl) sEl.innerText = seconds < 10 ? "0" + seconds : seconds;
+
+            // Si el evento ya pasó
             if (distance < 0) {
                 clearInterval(countdownInterval);
-                document.getElementById("countdown").innerHTML = "<h2>El evento ha comenzado</h2>";
+                const cd = document.getElementById("countdown");
+                if (cd) cd.innerHTML = "<h2 style='color: var(--gold); font-size: 2rem;'>El evento ha comenzado</h2>";
             }
         }
 
+        // Iniciar cuenta regresiva
         const countdownInterval = setInterval(updateCountdown, 1000);
-        updateCountdown();
+        updateCountdown(); // Ejecutar inmediatamente
 
         // === CONTROL DE ZOOM PARA EL MAPA DE ASIENTOS ===
         let zoomLevel = 0.5; // Empieza al 50%
         const iframe = document.getElementById('sheetFrame');
 
         function applyZoom() {
-            iframe.style.width = (100 / zoomLevel) + "%";
-            iframe.style.height = (100 / zoomLevel) + "%";
-            iframe.style.transform = `scale(${zoomLevel})`;
+            if (iframe) {
+                iframe.style.width = (100 / zoomLevel) + "%";
+                iframe.style.height = (100 / zoomLevel) + "%";
+                iframe.style.transform = `scale(${zoomLevel})`;
+            }
         }
 
         document.getElementById('zoomIn').addEventListener('click', () => {
@@ -344,8 +436,8 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('service-worker.js')
-                    .then(reg => console.log('Service Worker registrado con éxito.', reg))
-                    .catch(err => console.log('Error al registrar el Service Worker:', err));
+                    .then(reg => console.log('Service Worker registrado.', reg))
+                    .catch(err => console.log('Error SW:', err));
             });
         }
     </script>
