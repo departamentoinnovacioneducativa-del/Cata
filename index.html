@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> PRIMERA GRAN CATA INICIATICA DE VINO MASÓNICO 2026 </title>
+    <title>PRIMERA GRAN CATA INICIATICA DE VINO MASÓNICO 2026</title>
     
     <!-- Manifest para PWA (App móvil) -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#000000">
-    <link rel="apple-touch-icon" href="copa.png"> 
+    <link rel="apple-touch-icon" href="copa.png">
     <link rel="icon" href="copa.png">
 
     <!-- Script del Chatbot -->
@@ -60,7 +60,6 @@
             pointer-events: none;
         }
 
-        /* Asegurar que el contenido esté sobre el lienzo */
         header, section, footer, .interactive-container {
             position: relative;
             z-index: 2;
@@ -88,15 +87,19 @@
         h1 {
             font-family: 'Cinzel', serif;
             font-weight: 900;
-            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            /* Ajustado para que el título largo se vea bien */
+            font-size: clamp(1.8rem, 4.5vw, 3.8rem);
             background: linear-gradient(to right, var(--gold), var(--gold-light), var(--gold));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: 6px;
+            letter-spacing: 3px; /* Reducido para que no salga tanto del celular */
             text-transform: uppercase;
             margin-bottom: 15px;
             filter: drop-shadow(0 2px 10px rgba(0,0,0,0.8));
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .subtitle {
@@ -178,7 +181,7 @@
             text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
         }
 
-        /* Contenedor Flexbox para PC (Chatbot y Mapa lado a lado) */
+        /* Contenedor Flexbox para PC */
         .interactive-container {
             display: flex;
             flex-direction: column;
@@ -292,7 +295,6 @@
                 flex-direction: row;
                 align-items: flex-start;
             }
-            /* En PC, el mapa es un poco más ancho */
             .map-section {
                 flex: 1.4;
             }
@@ -312,7 +314,7 @@
                 height: 450px;
             }
             h1 {
-                letter-spacing: 3px;
+                letter-spacing: 1px; /* Reduce aún más el espacio en celular */
             }
             .chat-container {
                 height: 500px;
@@ -326,7 +328,7 @@
     <canvas id="fire-canvas"></canvas>
 
     <header>
-        <h1>Cata de Vino Masónico</h1>
+        <h1>PRIMERA GRAN CATA INICIATICA DE VINO MASÓNICO 2026</h1>
         <p class="subtitle">Te invitamos a compartir este momento con nosotros</p>
     </header>
 
@@ -354,7 +356,7 @@
         <p class="event-date">21 de Noviembre de 2026 a las 18:00 hrs</p>
     </section>
 
-    <!-- Contenedor de Chatbot y Mapa (2 columnas en PC) -->
+    <!-- Contenedor de Chatbot y Mapa -->
     <div class="interactive-container">
         
         <!-- Columna 1: Chatbot -->
@@ -410,7 +412,6 @@
                 this.speedY = Math.random() * 1.2 + 0.3;
                 this.speedX = Math.random() * 0.6 - 0.3;
                 this.opacity = Math.random() * 0.6 + 0.2;
-                // Colores: Naranja oscuro a Dorado
                 this.color = Math.random() > 0.5 ? '255, 140, 0' : '255, 215, 0'; 
             }
             update() {
@@ -432,7 +433,7 @@
 
         function initEmbers() {
             embers = [];
-            const count = Math.floor(window.innerWidth / 20); // Densidad
+            const count = Math.floor(window.innerWidth / 20);
             for (let i = 0; i < count; i++) {
                 embers.push(new Ember());
             }
@@ -450,7 +451,6 @@
         initEmbers();
         animateEmbers();
         window.addEventListener('resize', initEmbers);
-
 
         // === CUENTA REGRESIVA ===
         const eventDate = new Date('2026-11-21T18:00:00').getTime();
